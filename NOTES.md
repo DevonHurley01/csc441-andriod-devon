@@ -10,3 +10,11 @@
 
 &#x09;**I am confused on what the gradle is doing and what all of that code means.**
 
+
+
+Week 5, Friday. Change one Modifier on your Column — the padding number, or swap .fillMaxWidth() for
+
+.fillMaxSize(). Write down what you changed and what happened to the screen. One or two sentences.
+
+&#x09;**When changing the padding dp for .fillMaxWidth() in column it adds pixels from all sides increasing the spacing.**
+

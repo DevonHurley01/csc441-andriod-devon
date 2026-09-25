@@ -1,9 +1,11 @@
 package edu.lemoyne.campusapp
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +51,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(24.dp)
     ) {
+        // --- Class6: Task 3: picture of my own ---
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Cross Masonry Logo",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         // --- Class 6: Step 4: real styling ---
         Text(
             text = "Cross Masonry",
@@ -62,10 +79,20 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         )
 
         Spacer(modifier = Modifier.height(24.dp))
-
+        // --- Lab6: Task 1: Making screen yours ---
         Text(text = "Free Chimney Inspections",fontSize = 18.sp)
-        Text(text = "Certified", fontSize = 18.sp)
+        Text(text = "Certified Mason", fontSize = 18.sp)
         Text(text = "30 years of experience", fontSize = 18.sp)
+        Text(text = "Certified Chimney Sweeper")
+
+        // --- Lab6: Task 2: footer ---
+        Spacer(modifier = Modifier.height(350.dp))
+
+        Text(
+            text = "Last updated September 2026",
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 
 }
@@ -75,5 +102,16 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 fun HomeScreenPreview() {
     CampusAppTheme() {
         HomeScreen()
+    }
+}
+
+// --- Class6: Task 4: dark mode preview ---
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun HomeScreenDarkPreview() {
+    CampusAppTheme() {
+        Surface() {
+            HomeScreen()
+        }
     }
 }
