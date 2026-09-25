@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import edu.lemoyne.campusapp.ui.theme.CampusAppTheme
 
+const val NAME = "Devon"
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +23,7 @@ class MainActivity : ComponentActivity() {
             CampusAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = NAME,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -30,6 +32,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// --- Class 5: Step 6: my own greeting ---
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -42,6 +45,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     CampusAppTheme {
-        Greeting("Android")
+        Greeting(NAME)
     }
 }
