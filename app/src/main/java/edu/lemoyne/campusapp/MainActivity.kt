@@ -83,7 +83,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(24.dp)
     ) {
-        CounterDemo()
+        // CounterDemo()
         // --- Class6: Task 3: picture of my own ---
         Image(
             painter = painterResource(id = R.drawable.logo),
