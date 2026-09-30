@@ -26,11 +26,12 @@ Week 6, Wednesday.
 
 &#x20;  **The code did not break due to a safety feature for my API.**
 
-1. In your own words: why did count change but the screen didn't?
-**Count was not remembered when the screen refreshed and changed orientation.**
-2. What does remember do? What would happen without it?
+2\. In your own words: why did count change but the screen didn't?
+   **Count was not remembered when the screen refreshed and changed orientation.**
 
-&#x20;  **Remember keeps a calculations and stores it to that value so when screen changes orientation calculation with stay the same.**
+3\. What does remember do? What would happen without it?
+
+&#x20;  **Remember keeps a calculations and stores it to that value so when screen changes orientation calculation will stay the same.**
 
 
 
