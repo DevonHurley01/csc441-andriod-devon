@@ -12,11 +12,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -42,15 +49,41 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// --- Class 7: Step 1: a counter that remembers ---
+@Composable
+fun CounterDemo() {
+    var count by remember { mutableStateOf(0) }
+
+    Button(
+        onClick = {count++ }
+    ) {
+        Text(text = "Tapped $count times")
+    }
+}
+
 // --- Class 6: Step1: My own screen ---
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+    // Class 7: Step 2: the list lives in state ---
+    var info = remember {
+        mutableStateListOf(
+            "Free Chimney Inspections",
+            "Certified Mason",
+            "30 years of experience",
+            "Certified Chimney Sweeper"
+        )
+    }
+
+    // --- Class 7: Step 4: what's typed lives in state ---
+    var newInfo by remember { mutableStateOf("") }
+
     // --- Class 6: Step 3: a column, so things stack ---
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(24.dp)
     ) {
+        // CounterDemo()
         // --- Class6: Task 3: picture of my own ---
         Image(
             painter = painterResource(id = R.drawable.logo),
@@ -79,11 +112,63 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         )
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        // --- Class 7: Step 3: the text field ---
+        OutlinedTextField(
+            value = newInfo,
+            onValueChange = { newInfo = it},
+            label = { Text("Message") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        // Lab 7: Task 4: a live character counter ---
+        Text(
+            text = "${newInfo.length} / 40",
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        //Class 7: Step 4: the button changes the state ---
+        Button(onClick = {
+            info.add(newInfo)
+            newInfo = ""
+        }) {
+            Text("Add Message")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // --- Lab 7: Task 1: remove the last item ---
+        Button(onClick = {
+            if (info.isNotEmpty()) {
+                info.removeAt(info.lastIndex)
+            }
+        }) {
+            Text("Remove last")
+        }
+
+        // --- Lab 7: Task 3: clear all ---
+        Button(onClick =  {
+            info.clear()
+        }) {
+            Text("Clear")
+        }
+
+        // --- Class 7: step 3: draw whatever is in the  list
+        Text(
+            // --- Lab 7: task 2: singular and plural ---
+            text = if (info.size == 1) "1 message" else "${info.size} messages",
+            fontWeight = FontWeight.Bold
+            )
+        for (trail in info) {
+            Text(text = trail, fontSize = 18.sp)
+        }
+
         // --- Lab6: Task 1: Making screen yours ---
-        Text(text = "Free Chimney Inspections",fontSize = 18.sp)
-        Text(text = "Certified Mason", fontSize = 18.sp)
-        Text(text = "30 years of experience", fontSize = 18.sp)
-        Text(text = "Certified Chimney Sweeper")
+        //Text(text = "Free Chimney Inspections",fontSize = 18.sp)
+        //Text(text = "Certified Mason", fontSize = 18.sp)
+        //Text(text = "30 years of experience", fontSize = 18.sp)
+        //Text(text = "Certified Chimney Sweeper")
 
         // --- Lab6: Task 2: footer ---
         Spacer(modifier = Modifier.height(350.dp))
