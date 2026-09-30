@@ -121,6 +121,13 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         )
 
+        // Lab 7: Task 4: a live character counter ---
+        Text(
+            text = "${newInfo.length} / 40",
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
         //Class 7: Step 4: the button changes the state ---
         Button(onClick = {
             info.add(newInfo)
@@ -131,9 +138,26 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // --- Lab 7: Task 1: remove the last item ---
+        Button(onClick = {
+            if (info.isNotEmpty()) {
+                info.removeAt(info.lastIndex)
+            }
+        }) {
+            Text("Remove last")
+        }
+
+        // --- Lab 7: Task 3: clear all ---
+        Button(onClick =  {
+            info.clear()
+        }) {
+            Text("Clear")
+        }
+
         // --- Class 7: step 3: draw whatever is in the  list
         Text(
-            text =  "${info.size} messages",
+            // --- Lab 7: task 2: singular and plural ---
+            text = if (info.size == 1) "1 message" else "${info.size} messages",
             fontWeight = FontWeight.Bold
             )
         for (trail in info) {

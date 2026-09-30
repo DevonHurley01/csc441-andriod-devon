@@ -18,3 +18,19 @@ Week 5, Friday. Change one Modifier on your Column — the padding number, or sw
 
 &#x09;**When changing the padding dp for .fillMaxWidth() in column it adds pixels from all sides increasing the spacing.**
 
+
+
+Week 6, Wednesday.
+
+1. Paste the Logcat lines from your broken counter.
+
+&#x20;  **The code did not break due to a safety feature for my API.**
+
+1. In your own words: why did count change but the screen didn't?
+**Count was not remembered when the screen refreshed and changed orientation.**
+2. What does remember do? What would happen without it?
+
+&#x20;  **Remember keeps a calculations and stores it to that value so when screen changes orientation calculation with stay the same.**
+
+
+
