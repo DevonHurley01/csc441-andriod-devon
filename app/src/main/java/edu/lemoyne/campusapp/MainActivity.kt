@@ -76,6 +76,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
     // --- Class 7: Step 4: what's typed lives in state ---
     var newInfo by remember { mutableStateOf("") }
+    // --- Class 8: step 2: the error message live in the state too ---
+    var error by remember { mutableStateOf<String?>(null) }
+
 
     // --- Class 6: Step 3: a column, so things stack ---
     Column(
@@ -116,23 +119,47 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         // --- Class 7: Step 3: the text field ---
         OutlinedTextField(
             value = newInfo,
-            onValueChange = { newInfo = it},
+            // --- Class 8: Step 3: the field itself pushes back ---
+            onValueChange = {
+                newInfo = it
+                error = null
+            },
             label = { Text("Message") },
+            singleLine = true,
+            isError = error != null,
             modifier = Modifier.fillMaxWidth()
         )
 
+        error?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 14.sp
+            )
+        }
+
         // Lab 7: Task 4: a live character counter ---
         Text(
-            text = "${newInfo.length} / 40",
+            text = "${newInfo.length} / 30",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         //Class 7: Step 4: the button changes the state ---
         Button(onClick = {
-            info.add(newInfo)
-            newInfo = ""
-        }) {
+            // --- Class 8: Step 3: check before your add ---
+            val problem = validateMessageName( newInfo, info)
+            if (problem == null) {
+                info.add(newInfo)
+                newInfo = ""
+            } else {
+                error = problem
+            }
+
+        },
+            // --- Class 8: Step 4: the sign on the door, not the lock ---
+            enabled = newInfo.isNotBlank()
+            ) {
             Text("Add Message")
         }
 
@@ -181,6 +208,23 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     }
 
 }
+
+
+const val MAX_NAME_LENGTH = 30
+
+// --- Class 8: Step 1: one rule book for message names ---
+fun validateMessageName(input: String, existingMessage: List<String>): String? {
+    val message = input.trim()
+    return when {
+        message.isEmpty() -> "Enter a message"
+        message.length > MAX_NAME_LENGTH -> "Keep it to $MAX_NAME_LENGTH character or less"
+        existingMessage.any { it.equals( message, ignoreCase = true) } -> "That message has already on the list"
+        else -> null
+        }
+    }
+
+
+
 // Class 6: Step 2: preview ---
 @Preview
 @Composable
