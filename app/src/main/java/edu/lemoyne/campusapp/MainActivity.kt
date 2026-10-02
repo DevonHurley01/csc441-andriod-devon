@@ -121,7 +121,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             value = newInfo,
             // --- Class 8: Step 3: the field itself pushes back ---
             onValueChange = {
-                newInfo = it
+                newInfo = it.take(n = MAX_NAME_LENGTH)
                 error = null
             },
             label = { Text("Message") },
@@ -217,6 +217,10 @@ fun validateMessageName(input: String, existingMessage: List<String>): String? {
     val message = input.trim()
     return when {
         message.isEmpty() -> "Enter a message"
+        // --- Lab 8: Task 1: minimum length ---
+        message.length < 3 -> "Too short - at least 3 character"
+        // --- Lab 8: Task 2: my own rule ---
+        !message.first().isLetter() -> "Start with a letter"
         message.length > MAX_NAME_LENGTH -> "Keep it to $MAX_NAME_LENGTH character or less"
         existingMessage.any { it.equals( message, ignoreCase = true) } -> "That message has already on the list"
         else -> null

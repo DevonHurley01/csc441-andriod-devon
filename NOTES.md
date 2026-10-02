@@ -27,11 +27,34 @@ Week 6, Wednesday.
 &#x20;  **The code did not break due to a safety feature for my API.**
 
 2\. In your own words: why did count change but the screen didn't?
-   **Count was not remembered when the screen refreshed and changed orientation.**
+**Count was not remembered when the screen refreshed and changed orientation.**
 
 3\. What does remember do? What would happen without it?
 
 &#x20;  **Remember keeps a calculations and stores it to that value so when screen changes orientation calculation will stay the same.**
 
 
+
+
+
+Week 7, Friday.
+
+1. Changing the order of task one above empty doesn't change the output. The add button is grayed out and doesn't allow you to add an empty string or a string with minimum character.
+
+
+
+2\. This is an interactive website for a company and starting with a number is unprofessional.
+
+
+
+3\. I typed | What the app did | Correct?
+
+* (nothing) | Add button greyed out | yes
+* "   " | Add button greyed out | yes
+* I added over 30 character | Didn't allow me to enter anymore character | yes
+* I added two letters | It said " too short - at least 3 characters" | yes
+* duplicated item with different Capitals | It said "That message is already on the list" | yes
+* Entered a string starting with a number "1hey" | It said "Start with a letter" | yes
+* "Hey" | It added to list | yes
+* "Cross Masonry" | It added to list | yes
 
