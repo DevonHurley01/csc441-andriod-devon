@@ -58,3 +58,13 @@ Week 7, Friday.
 * "Hey" | It added to list | yes
 * "Cross Masonry" | It added to list | yes
 
+
+
+
+
+Week 7, Wed.
+
+* After adding two new messages and rotating the screen on the list screen (see all messages).
+* The two new items were not there  after rotating the screen.
+* the difference is that remebersaveable keeps that data saved during the full session while remember keeps data saved unless there is a rotation or new session.
+

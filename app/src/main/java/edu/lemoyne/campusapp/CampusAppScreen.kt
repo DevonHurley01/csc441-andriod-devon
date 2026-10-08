@@ -61,10 +61,17 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
         "home" -> HomeScreen(
             info = info,
             onAddInfo = {info.add(it) },
-            onSeeAll = { currentScreen = "List" }
+            onSeeAll = { currentScreen = "List" },
+            // --- Lab 9: Task b-3: Add onAbout for HomeScreen ---
+            onAbout = { currentScreen = "About"}
         )
         "List" -> ListScreen(
             info = info,
+            onBack = {currentScreen = "home"},
+            modifier = modifier
+        )
+        // --- lab 9: Task b-1: add about onBack ---
+        "About" -> AboutScreen(
             onBack = {currentScreen = "home"},
             modifier = modifier
         )
@@ -78,6 +85,8 @@ fun HomeScreen(
     info: MutableList<String>,
     onAddInfo: (String) -> Unit,
     onSeeAll: () -> Unit,
+    // --- Lab 9: Task b-2: add onAbout ---
+    onAbout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // --- Class 7: Step 4: what's typed lives in state ---
@@ -195,6 +204,13 @@ fun HomeScreen(
             Text(text = "See all messages")
         }
 
+        // --- Lab 9: Task b-4: Add a textButton for About ---
+        Button(
+            onClick = onAbout
+        ) {
+            Text(text = "About")
+        }
+
         // --- Lab6: Task 2: footer ---
         Spacer(modifier = Modifier.height(350.dp))
 
@@ -231,11 +247,45 @@ fun ListScreen(
             fontWeight = FontWeight.Bold
         )
 
+        // --- Lab 9: Task 1: Count on list screen ---
+        Text(
+            // --- Lab 7: task 2: singular and plural ---
+            text = if (info.size == 1) "1 message" else "${info.size} messages",
+            fontWeight = FontWeight.Bold
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         for (trail in info) {
             Text(text = trail, fontSize = 18.sp)
         }
+    }
+}
+
+// Lab 9: Task 2: a third screen ---
+@Composable
+fun AboutScreen(
+    onBack: () -> Unit,
+    modifier: Modifier
+) {
+    BackHandler { onBack() }
+    Column(
+        modifier = modifier.fillMaxWidth().padding(24.dp)
+    ) {
+        TextButton(onClick = onBack) {
+            Text("Back")
+        }
+
+        Text(
+            text = "About",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Cross Masonry is a business located in Bennington Vermont")
+        Text(text = "Our services include anything with Brick, Block, and Stone")
     }
 }
 
@@ -271,7 +321,9 @@ fun HomeScreenPreview() {
                 "Certified Chimney Sweeper"
             ),
             onAddInfo = {},
-            onSeeAll = {}
+            onSeeAll = {},
+            // --- Lab 9: Task b-5: onAbout to preview ---
+            onAbout = {}
         )
     }
 }
