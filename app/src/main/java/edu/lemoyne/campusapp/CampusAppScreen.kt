@@ -3,12 +3,18 @@ package edu.lemoyne.campusapp
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -21,6 +27,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -51,9 +59,16 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             "Free Chimney Inspections",
             "Certified Mason",
             "30 years of experience",
-            "Certified Chimney Sweeper"
+            "Certified Chimney Sweeper",
+            "Built to with stand"
         )
     }
+
+//    // --- Class 10: Step 1: see the problem ---
+//    val info = remember {
+//        (1..60).map { "Test info $it" }.toMutableStateList()
+//    }
+
     // --- Class 9: Step 4: which screen is showing just state ---
     var currentScreen by rememberSaveable { mutableStateOf("home") }
 
@@ -68,6 +83,8 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
         "List" -> ListScreen(
             info = info,
             onBack = {currentScreen = "home"},
+            // Class 10: step 4 part 3: only the owner changes the list ---
+            onRemove = { info.remove(it)},
             modifier = modifier
         )
         // --- lab 9: Task b-1: add about onBack ---
@@ -228,14 +245,24 @@ fun HomeScreen(
 fun ListScreen(
     info: List<String>,
     onBack: () -> Unit,
+    // --- Class 10: step 4 part 2: pass the request ---
+    onRemove: (String) -> Unit,
     modifier: Modifier = Modifier
-){
+) {
+//    // --- Class 10: Step 4 part 2: state which item ---
+//    items(info) {info ->
+//        InfoRow(
+//            name = info,
+//            onRemove = {onRemove (info)}
+//        )
+//    }
+
     // --- Class 9: Step 6: the phone
     BackHandler { onBack() }
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(24.dp)
+            .fillMaxSize()
+            .padding(horizontal = 24.dp)
     ) {
         TextButton(onClick = onBack) {
             Text(text = "Back")
@@ -256,98 +283,166 @@ fun ListScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        for (trail in info) {
-            Text(text = trail, fontSize = 18.sp)
+//        for (trail in info) {
+//            Text(text = trail, fontSize = 18.sp)
+//        }
+
+        // Class 10: Step 5: the empty case ---
+        if (info.isEmpty()) {
+            Text(
+                text = "No messages yet. Add one on the home screen",
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        } else {
+            // --- Class 10: step 2: a list scrolls
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(info) { info ->
+                    InfoRow(
+                        name = info,
+                        onRemove = { onRemove(info) }
+                    )
+                }
+            }
         }
     }
 }
-
-// Lab 9: Task 2: a third screen ---
-@Composable
-fun AboutScreen(
-    onBack: () -> Unit,
-    modifier: Modifier
-) {
-    BackHandler { onBack() }
-    Column(
-        modifier = modifier.fillMaxWidth().padding(24.dp)
+    // --- Class 10: Step 3: one row as its own Composable ---
+    @Composable
+    fun InfoRow(
+        name: String,
+        onRemove: () -> Unit
     ) {
-        TextButton(onClick = onBack) {
-            Text("Back")
+        // --- Class 10: Step 4: a remove button on every row ---
+        TextButton(onClick = onRemove) {
+            Text("Remove")
         }
 
-        Text(
-            text = "About",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Cross Masonry is a business located in Bennington Vermont")
-        Text(text = "Our services include anything with Brick, Block, and Stone")
-    }
-}
-
-const val MAX_NAME_LENGTH = 30
-
-// --- Class 8: Step 1: one rule book for message names ---
-fun validateMessageName(input: String, existingMessage: List<String>): String? {
-    val message = input.trim()
-    return when {
-        message.isEmpty() -> "Enter a message"
-        // --- Lab 8: Task 1: minimum length ---
-        message.length < 3 -> "Too short - at least 3 character"
-        // --- Lab 8: Task 2: my own rule ---
-        !message.first().isLetter() -> "Start with a letter"
-        message.length > MAX_NAME_LENGTH -> "Keep it to $MAX_NAME_LENGTH character or less"
-        existingMessage.any { it.equals( message, ignoreCase = true) } -> "That message has already on the list"
-        else -> null
-    }
-}
-
-
-
-// Class 6: Step 2: preview ---
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    CampusAppTheme() {
-        HomeScreen(
-            info = mutableListOf(
-                "Free Chimney Inspections",
-                "Certified Mason",
-                "30 years of experience",
-                "Certified Chimney Sweeper"
-            ),
-            onAddInfo = {},
-            onSeeAll = {},
-            // --- Lab 9: Task b-5: onAbout to preview ---
-            onAbout = {}
-        )
-    }
-}
-
-// --- Class6: Task 4: dark mode preview ---
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun HomeScreenDarkPreview() {
-    CampusAppTheme() {
-        Surface() {
-         //   HomeScreen()
+        Card(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = name,
+                    fontSize = 18.sp,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
-}
 
+    // Lab 9: Task 2: a third screen ---
+    @Composable
+    fun AboutScreen(
+        onBack: () -> Unit,
+        modifier: Modifier
+    ) {
+        BackHandler { onBack() }
+        Column(
+            modifier = modifier.fillMaxWidth().padding(24.dp)
+        ) {
+            TextButton(onClick = onBack) {
+                Text("Back")
+            }
 
-// --- Class 9: Step 7: preview the list screen ---
-@Preview
-@Composable
-fun ListScreenPreview(){
-    CampusAppTheme {
-        ListScreen(
-            info = listOf("Free Chimney Inspections","Certified Mason", "30 years of experience", "Certified Chimney Sweeper"),
-            onBack = {}
-        )
+            Text(
+                text = "About",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = "Cross Masonry is a business located in Bennington Vermont")
+            Text(text = "Our services include anything with Brick, Block, and Stone")
+        }
     }
-}
+
+    const val MAX_NAME_LENGTH = 30
+
+    // --- Class 8: Step 1: one rule book for message names ---
+    fun validateMessageName(input: String, existingMessage: List<String>): String? {
+        val message = input.trim()
+        return when {
+            message.isEmpty() -> "Enter a message"
+            // --- Lab 8: Task 1: minimum length ---
+            message.length < 3 -> "Too short - at least 3 character"
+            // --- Lab 8: Task 2: my own rule ---
+            !message.first().isLetter() -> "Start with a letter"
+            message.length > MAX_NAME_LENGTH -> "Keep it to $MAX_NAME_LENGTH character or less"
+            existingMessage.any {
+                it.equals(
+                    message,
+                    ignoreCase = true
+                )
+            } -> "That message has already on the list"
+
+            else -> null
+        }
+    }
+
+
+    // Class 6: Step 2: preview ---
+    @Preview
+    @Composable
+    fun HomeScreenPreview() {
+        CampusAppTheme() {
+            HomeScreen(
+                info = mutableListOf(
+                    "Free Chimney Inspections",
+                    "Certified Mason",
+                    "30 years of experience",
+                    "Certified Chimney Sweeper"
+                ),
+                onAddInfo = {},
+                onSeeAll = {},
+                // --- Lab 9: Task b-5: onAbout to preview ---
+                onAbout = {}
+            )
+        }
+    }
+
+    // --- Class6: Task 4: dark mode preview ---
+    @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+    @Composable
+    fun HomeScreenDarkPreview() {
+        CampusAppTheme() {
+            Surface() {
+                //   HomeScreen()
+            }
+        }
+    }
+
+
+    // --- Class 9: Step 7: preview the list screen ---
+    @Preview
+    @Composable
+    fun ListScreenPreview() {
+        CampusAppTheme {
+            ListScreen(
+                info = listOf(
+                    "Free Chimney Inspections",
+                    "Certified Mason",
+                    "30 years of experience",
+                    "Certified Chimney Sweeper"
+                ),
+                onBack = {},
+                onRemove = {}
+            )
+        }
+    }
+
+    // Class 10: step 5: preview the empty case too ---
+@Preview(showBackground = true)
+@Composable
+    fun ListScreenEmptyPreview(){
+        CampusAppTheme() {
+            ListScreen(
+                info = emptyList(),
+                onBack = {},
+                onRemove = {}
+            )
+        }
+    }
