@@ -85,6 +85,7 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             onBack = {currentScreen = "home"},
             // Class 10: step 4 part 3: only the owner changes the list ---
             onRemove = { info.remove(it)},
+            onRemoveAll = { info.clear() },
             modifier = modifier
         )
         // --- lab 9: Task b-1: add about onBack ---
@@ -247,6 +248,8 @@ fun ListScreen(
     onBack: () -> Unit,
     // --- Class 10: step 4 part 2: pass the request ---
     onRemove: (String) -> Unit,
+    // --- Lab 10: Task 2: create removeall parameter ---
+    onRemoveAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 //    // --- Class 10: Step 4 part 2: state which item ---
@@ -281,6 +284,13 @@ fun ListScreen(
             fontWeight = FontWeight.Bold
         )
 
+        // --- Lab 10: task 2: remove all through the owner ---
+        if(info.isNotEmpty()){
+            TextButton(onClick = onRemoveAll) {
+                Text(text = "Remove All")
+            }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
 //        for (trail in info) {
@@ -291,7 +301,7 @@ fun ListScreen(
         if (info.isEmpty()) {
             Text(
                 text = "No messages yet. Add one on the home screen",
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         } else {
             // --- Class 10: step 2: a list scrolls
@@ -306,8 +316,14 @@ fun ListScreen(
                 }
             }
         }
+        // --- Lab 10 Task 1: way out of the empty screen ---
+        TextButton(onClick = onBack) {
+            Text(text = "Back Home")
+        }
     }
 }
+
+
     // --- Class 10: Step 3: one row as its own Composable ---
     @Composable
     fun InfoRow(
@@ -429,7 +445,8 @@ fun ListScreen(
                     "Certified Chimney Sweeper"
                 ),
                 onBack = {},
-                onRemove = {}
+                onRemove = {},
+                onRemoveAll = {}
             )
         }
     }
@@ -442,7 +459,8 @@ fun ListScreen(
             ListScreen(
                 info = emptyList(),
                 onBack = {},
-                onRemove = {}
+                onRemove = {},
+                onRemoveAll = {}
             )
         }
     }
