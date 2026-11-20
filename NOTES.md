@@ -68,3 +68,31 @@ Week 7, Wed.
 * The two new items were not there  after rotating the screen.
 * the difference is that remebersaveable keeps that data saved during the full session while remember keeps data saved unless there is a rotation or new session.
 
+
+
+
+
+Week 13, Lab 21
+
+1\. What triggers refresh() when InterestsScreen first opens?
+
+&#x09;**Lauchedeffect triggers refresh when InterestsScreen frist opens.**
+
+2\. What triggers refresh() when the button is tapped?
+
+&#x09;**the refresh item button triggers the onRefresh using onClick.**
+
+3\. Why does InterestsScreen receive onRefresh instead of the ViewModel?
+
+&#x09;**InterestScreen isn't connected to viewmodel so this keeps them separate.**
+
+4\. What is the difference between a successful \[] response and a network failure?
+
+&#x09;**A network failure shows that the app can't connect to supabase, but successful \[] response just shows that there are no items to display.**
+
+5\. How did you prove Android and the website use the same Supabase data?
+
+&#x09;**If my emulator was working I would open both the website and app and compare the data that is being outputted to see if they are using the same Supabase.**
+
+I was not able to get my emulator to run so I don't have any screenshots.
+
