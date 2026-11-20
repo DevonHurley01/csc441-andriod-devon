@@ -52,7 +52,7 @@ fun CounterDemo() {
 
 // --- Class 9: Step 2: One owner for the data ---
 @Composable
-fun CampusAppScreen(modifier: Modifier = Modifier) {
+fun CampusAppScreen(showcaseState: ShowcaseUiState,onRefresh: () -> Unit, modifier: Modifier = Modifier) {
     // Class 7: Step 2: the list lives in state ---
     var info = remember {
         mutableStateListOf(
@@ -78,7 +78,8 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             onAddInfo = {info.add(it) },
             onSeeAll = { currentScreen = "List" },
             // --- Lab 9: Task b-3: Add onAbout for HomeScreen ---
-            onAbout = { currentScreen = "About"}
+            onAbout = { currentScreen = "About"},
+            onInterestsClick = { currentScreen = "interests"}
         )
         "List" -> ListScreen(
             info = info,
@@ -93,6 +94,13 @@ fun CampusAppScreen(modifier: Modifier = Modifier) {
             onBack = {currentScreen = "home"},
             modifier = modifier
         )
+        // --- Class 13: step 5: add an interest case ---
+        "Interests" -> InterestsScreen(
+            state = showcaseState,
+            onBack = {currentScreen = "home"},
+            onRefresh = onRefresh,
+            modifier = modifier
+        )
     }
 }
 
@@ -105,7 +113,8 @@ fun HomeScreen(
     onSeeAll: () -> Unit,
     // --- Lab 9: Task b-2: add onAbout ---
     onAbout: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onInterestsClick: () -> Unit = {}
 ) {
     // --- Class 7: Step 4: what's typed lives in state ---
     var newInfo by remember { mutableStateOf("") }
@@ -229,6 +238,9 @@ fun HomeScreen(
             Text(text = "About")
         }
 
+        // --- Class 13 step 5: add my interest button ---
+        Button(onClick = onInterestsClick) { Text("My Interests") }
+
         // --- Lab6: Task 2: footer ---
         Spacer(modifier = Modifier.height(350.dp))
 
@@ -237,6 +249,7 @@ fun HomeScreen(
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
     }
 
 }
