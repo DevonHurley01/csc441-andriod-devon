@@ -94,6 +94,9 @@ fun CampusAppScreen(showcaseState: ShowcaseUiState,onRefresh: () -> Unit, modifi
             onBack = {currentScreen = "home"},
             modifier = modifier
         )
+
+
+
         // --- Class 13: step 5: add an interest case ---
         "Interests" -> InterestsScreen(
             state = showcaseState,
