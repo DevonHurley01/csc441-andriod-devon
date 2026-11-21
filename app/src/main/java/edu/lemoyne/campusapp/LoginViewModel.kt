@@ -24,7 +24,7 @@ class LoginViewModel: ViewModel() {
                 _state.value = LoginUiState(loading = false)
                 onSuccess(token)
             }catch (error: Exception){
-
+                _state.value = LoginUiState(failed = true)
             }
         }
     }
